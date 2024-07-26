@@ -1,3 +1,17 @@
+buildscript{
+    ext.kotlin_version='1.9.22'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.google.gms:google-services:4.4.1'
+        classpath 'org.jetbrains.kotlin:kotlin-ksp:1.4.0-rc-dev-experimental-20200828'
+        classpath 'org.jetbrains.kotlin:kotlin-symbol-processing-api:1.4.0-rc-dev-experimental-20200828'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 allprojects {
     repositories {
         google()

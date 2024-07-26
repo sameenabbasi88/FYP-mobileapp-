@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:lost_and_found_app/CustomAlertBox.dart';
+
+import 'HomeScreen.dart';
 
 class SignUpScreen extends StatelessWidget {
   var username = TextEditingController();
@@ -10,11 +13,33 @@ class SignUpScreen extends StatelessWidget {
 
   var password = TextEditingController();
 
+  signup(BuildContext context,String email,String password) async{
+    if(email=='' && password==''){
+      CustomAlertBox.customAlertBox(context,'enter required feilds');
+    }
+    else{
+      UserCredential? usercredential;  // ? means it can be null
+      try{
+        usercredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: email, password: password).then((value){
+          Navigator.push(context,
+              MaterialPageRoute(builder:(context){
+                return HomeScreen();
+              }));
+        });
+      }
+      on FirebaseAuthException catch(ex){
+        return CustomAlertBox.customAlertBox(
+            context as BuildContext,ex.code.toString());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xff202c6d),
+          backgroundColor: Color(0xffFFC55A),
           leading: IconButton(
             onPressed: () {},
             icon: IconButton(
@@ -32,10 +57,11 @@ class SignUpScreen extends StatelessWidget {
           children: [
             Container(
               height: double.infinity,
-              color: Color(0xff202c6d),
+              color: Color(0xffFFC55A),
+
             ),
             Positioned(
-              top: 140,
+              top: 120,
               bottom: 0,
               right: 0,
               left: 0,
@@ -48,7 +74,7 @@ class SignUpScreen extends StatelessWidget {
                             .headlineMedium!
                             .copyWith(color: Colors.white)),
                     SizedBox(
-                      height: 90,
+                      height: 80,
                     ),
                     Container(
                       padding: EdgeInsets.all(12.0),
@@ -58,38 +84,22 @@ class SignUpScreen extends StatelessWidget {
                           topLeft: Radius.circular(40),
                           topRight: Radius.circular(40),
                         ),
-                        color: Color(0xffd0d0d0),
+                        color: Color(0xff5DEBD7),
                       ),
                       child: SingleChildScrollView(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             SizedBox(
-                              height: 50,
+                              height: 90,
                             ),
-                            TextField(
-                              controller: username,
-                              decoration: InputDecoration(
-                                label: Text(
-                                  'User Name',
-                                  style:
-                                      Theme.of(context).textTheme.headlineLarge,
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(19),
-                                    borderSide: BorderSide.none),
-                                filled: true,
-                                fillColor: Colors.white,
-                              ),
-                            ),
-                            SizedBox(height: 50),
                             TextField(
                               controller: email,
                               decoration: InputDecoration(
                                 label: Text(
                                   'Email',
                                   style:
-                                      Theme.of(context).textTheme.headlineLarge,
+                                  Theme.of(context).textTheme.headlineLarge,
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(19),
@@ -102,13 +112,14 @@ class SignUpScreen extends StatelessWidget {
                               height: 50,
                             ),
                             TextField(
+                              keyboardType: TextInputType.text,
                               controller: password,
                               obscureText: true,
                               decoration: InputDecoration(
                                 label: Text(
                                   'Password',
                                   style:
-                                      Theme.of(context).textTheme.headlineLarge,
+                                  Theme.of(context).textTheme.headlineLarge,
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(19),
@@ -127,9 +138,16 @@ class SignUpScreen extends StatelessWidget {
                             SizedBox(height: 90),
                             ElevatedButton(
                               onPressed: () {
-                                var usernameval = username.text.toString();
                                 var emailval = email.text.toString();
                                 var passwordval = password.text.toString();
+                                signup(context,emailval, passwordval);
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomeScreen(),
+                                  ),
+                                );
                               },
                               child: Text(
                                 "Sign Up",

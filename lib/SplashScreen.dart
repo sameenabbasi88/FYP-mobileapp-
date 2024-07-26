@@ -44,7 +44,7 @@ class _SplashscreenState extends State<Splashscreen> {
         body: Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
-        colors: [Color(0xff202c6d), Color(0xffd0d0d0)],
+        colors: [Color(0xffFFC55A), Color(0xff5DEBD7) ],
         begin: FractionalOffset(1.0, 0.0),
         end: FractionalOffset(0.0, 13.0),
 
@@ -61,7 +61,7 @@ class _SplashscreenState extends State<Splashscreen> {
           ],
           textStyle: TextStyle(
               fontFamily: 'FontMain',
-              color: Color(0xffd0d0d0),
+              color: Colors.black,
               fontSize: 40,
               fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
